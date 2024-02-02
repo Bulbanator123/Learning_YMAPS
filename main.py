@@ -33,9 +33,14 @@ class MAPA(pygame.sprite.Sprite):  # Класс карты
     def up_down(self, plus_or_minus):  # функция изменения масштаба
         x = self.rect.x
         y = self.rect.y
-        self.image = pygame.transform.scale(load_image('mapa.jpg'),
-                                            (self.rect.w + 10 * plus_or_minus, self.rect.h + 10 * plus_or_minus))
-        self.rect = self.image.get_rect().move(x - 5 * plus_or_minus, y - 5 * plus_or_minus)
+        if self.rect.w > 100 and self.rect.h > 100 and plus_or_minus == -1:
+            self.image = pygame.transform.scale(load_image('mapa.jpg'),
+                                                (self.rect.w + 10 * plus_or_minus, self.rect.h + 10 * plus_or_minus))
+            self.rect = self.image.get_rect().move(x - 5 * plus_or_minus, y - 5 * plus_or_minus)
+        elif self.rect.w < 2000 and self.rect.h < 2000 and plus_or_minus == 1:
+            self.image = pygame.transform.scale(load_image('mapa.jpg'),
+                                                (self.rect.w + 10 * plus_or_minus, self.rect.h + 10 * plus_or_minus))
+            self.rect = self.image.get_rect().move(x - 5 * plus_or_minus, y - 5 * plus_or_minus)
 
 
 def map_search(user_text):  # Функция для нахождения места, введённого в поиске
