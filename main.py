@@ -8,7 +8,7 @@ pygame.init()
 clock = pygame.time.Clock()
 width, height = 650, 650
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('text input')
+pygame.display.set_caption('CopyYandexMaps')
 user_text = ' '
 font = pygame.font.SysFont('frenchscript', 32)
 input_rect = pygame.Rect(10, 10, 140, 40)
@@ -21,10 +21,10 @@ mapagroup = pygame.sprite.Group()
 active = False
 
 
-class PNG(pygame.sprite.Sprite):
-    def __init__(self, x, y, name):
+class JPG(pygame.sprite.Sprite):
+    def __init__(self, x, y, sprite):
         super().__init__(mapagroup, all_sprites)
-        self.image = load_image(f"{name}")
+        self.image = sprite
         self.rect = self.image.get_rect().move(x, y)
 
 
@@ -80,13 +80,15 @@ while True:
         if events.type == pygame.MOUSEBUTTONDOWN:
             if input_rect.collidepoint(events.pos):
                 active = True
+            else:
+                active = False
 
         if events.type == pygame.KEYDOWN:
             if active is True:
                 if events.key == pygame.K_RETURN:
                     map_search(user_text)
-                    fon = pygame.transform.scale(load_image('mapa.jpg'), (width - 100, height - 100))
-                    PNG(10, 0, 'mapa.jpg')
+                    fon = pygame.transform.scale(load_image('mapa.jpg'), (width, height - 100))
+                    JPG(0, 100, fon)
                 elif events.key == pygame.K_BACKSPACE:
                     user_text = user_text[:-1]
                 else:
