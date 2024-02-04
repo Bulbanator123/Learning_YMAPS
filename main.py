@@ -37,10 +37,27 @@ class MAPA(pygame.sprite.Sprite):  # Класс карты
             self.image = pygame.transform.scale(load_image('mapa.jpg'),
                                                 (self.rect.w + 10 * plus_or_minus, self.rect.h + 10 * plus_or_minus))
             self.rect = self.image.get_rect().move(x - 5 * plus_or_minus, y - 5 * plus_or_minus)
+            if self.rect.x + self.rect.w < width // 2:
+                self.rect.x += 10
+            if self.rect.x > width // 2:
+                self.rect.x -= 10
+            if self.rect.y + self.rect.h < height // 2 + 100:
+                self.rect.y += 10
+            if self.rect.y > height // 2 + 100:
+                self.rect.y -= 10
         elif self.rect.w < 2000 and self.rect.h < 2000 and plus_or_minus == 1:
             self.image = pygame.transform.scale(load_image('mapa.jpg'),
                                                 (self.rect.w + 10 * plus_or_minus, self.rect.h + 10 * plus_or_minus))
             self.rect = self.image.get_rect().move(x - 5 * plus_or_minus, y - 5 * plus_or_minus)
+
+    def move_mapa(self, x, y):  # движение карты
+        dx = x
+        dy = y
+
+        if self.rect.topright[0] + dx >= width // 2 >= self.rect.topleft[0] + dx and dy == 0:
+            self.rect.move_ip([dx, dy])
+        if self.rect.topright[1] + dy <= height // 2 + 100 <= self.rect.bottomleft[1] + dy and dx == 0:
+            self.rect.move_ip([dx, dy])
 
 
 def map_search(user_text):  # Функция для нахождения места, введённого в поиске
@@ -126,6 +143,14 @@ if __name__ == "__main__":
                         mapa.up_down(1)
                     elif events.key == pygame.K_PAGEDOWN:
                         mapa.up_down(-1)
+                    elif events.key == pygame.K_UP:
+                        mapa.move_mapa(0, -10)
+                    elif events.key == pygame.K_DOWN:
+                        mapa.move_mapa(0, 10)
+                    elif events.key == pygame.K_LEFT:
+                        mapa.move_mapa(-10, 0)
+                    elif events.key == pygame.K_RIGHT:
+                        mapa.move_mapa(10, 0)
         screen.fill('white')
         mapa_group.draw(screen)
         if active:  # Изменение цвета ввода
